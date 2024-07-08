@@ -1,4 +1,3 @@
-import { HandleError } from "../../errors/errors";
 import { type IEmailValidator } from "../protocols/IEmailValidator";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
@@ -33,7 +32,10 @@ describe("CreateUserUseCase", () => {
 
         const { sut } = makeSut();
 
-        await expect(sut.execute(fakeUser)).rejects.toThrow("Invalid data");
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "Invalid Data",
+            statusCode: 400,
+        });
     });
 
     it("Shouuld return an error if lastName is invalid", async () => {
@@ -47,7 +49,10 @@ describe("CreateUserUseCase", () => {
 
         const { sut } = makeSut();
 
-        await expect(sut.execute(fakeUser)).rejects.toThrow("Invalid data");
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "Invalid Data",
+            statusCode: 400,
+        });
     });
 
     it("Shouuld return an error if email is invalid", async () => {
@@ -61,7 +66,10 @@ describe("CreateUserUseCase", () => {
 
         const { sut } = makeSut();
 
-        await expect(sut.execute(fakeUser)).rejects.toThrow("Invalid data");
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "Invalid Data",
+            statusCode: 400,
+        });
     });
 
     it("Shouuld return an error if password is invalid", async () => {
@@ -75,7 +83,10 @@ describe("CreateUserUseCase", () => {
 
         const { sut } = makeSut();
 
-        await expect(sut.execute(fakeUser)).rejects.toThrow("Invalid data");
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "Invalid Data",
+            statusCode: 400,
+        });
     });
 
     it("Shouuld return an error if lastName is invalid", async () => {
@@ -89,7 +100,10 @@ describe("CreateUserUseCase", () => {
 
         const { sut } = makeSut();
 
-        await expect(sut.execute(fakeUser)).rejects.toThrow("Invalid data");
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "Invalid Data",
+            statusCode: 400,
+        });
     });
 
     it("Should return a throw if password is different passwordConfirmation", async () => {
@@ -103,12 +117,10 @@ describe("CreateUserUseCase", () => {
 
         const { sut } = makeSut();
 
-        await expect(sut.execute(fakeUser)).rejects.toThrow(
-            new HandleError(
-                "Password and password confirmation must be equal",
-                400,
-            ),
-        );
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "Password and password confirmation must be equal",
+            statusCode: 400,
+        });
     });
 
     it("Should return a throw if email is not valid", async () => {
@@ -124,8 +136,9 @@ describe("CreateUserUseCase", () => {
 
         jest.spyOn(emailValidatorStub, "isEmail").mockReturnValueOnce(false);
 
-        await expect(sut.execute(fakeUser)).rejects.toThrow(
-            new HandleError("Email is not valid", 400),
-        );
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "Email is not valid",
+            statusCode: 400,
+        });
     });
 });
