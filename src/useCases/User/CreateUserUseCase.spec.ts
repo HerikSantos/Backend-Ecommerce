@@ -11,8 +11,7 @@ interface ITypesSut {
     encrypterHash: IEncrypterHash;
     userRepositoryStub: IUserRepository;
 }
-
-const repository: IDbUser[] = [];
+let repository: IDbUser[];
 
 function makeUserRepository(): IUserRepository {
     class UserRepositoryStub implements IUserRepository {
@@ -25,6 +24,12 @@ function makeUserRepository(): IUserRepository {
         async findById(id: string): Promise<IDbUser> {
             const user = repository.find((user) => user.id === id);
             if (!user) throw Error();
+            return user;
+        }
+
+        async findByEmail(email: string): Promise<IDbUser | null> {
+            const user = repository.find((user) => user.email === email);
+            if (!user) return null;
             return user;
         }
     }
@@ -62,6 +67,10 @@ function makeSut(): ITypesSut {
 }
 
 describe("CreateUserUseCase", () => {
+    beforeEach(() => {
+        repository = [];
+    });
+
     it("Shouuld return an error if name is invalid", async () => {
         const fakeUser = {
             name: "",
@@ -277,5 +286,21 @@ describe("CreateUserUseCase", () => {
         expect(createdUser).toEqual(findedUser);
     });
 
-    it("Should not possible create a user with email already exists", () => {});
+    it("Should return a thorw if user email already exists", async () => {
+        const { sut } = makeSut();
+
+        const fakeUser = {
+            name: "test",
+            lastName: "da silva",
+            email: "test@gmail.com",
+            password: "123456",
+            passwordConfirmation: "123456",
+        };
+
+        await sut.execute(fakeUser);
+        await expect(sut.execute(fakeUser)).rejects.toMatchObject({
+            message: "User already exits",
+            statusCode: 400,
+        });
+    });
 });
