@@ -1,4 +1,6 @@
+import { type IDbUser } from "../../entities/interfaces";
 import { MissingParams } from "../../errors/errors";
+import { type IUserRepository } from "../../repository/Prisma/IUserRepository";
 import { type IEmailValidator } from "../protocols/IEmailValidator";
 import { type IEncrypterHash } from "../protocols/IEncrypterHash";
 import { type ICreateUserUseCase } from "./ICreateUserUseCase";
@@ -7,16 +9,19 @@ import { type IUser } from "./interfaces";
 class CreateUserUseCase implements ICreateUserUseCase {
     private readonly emailValidator: IEmailValidator;
     private readonly encrypterHash: IEncrypterHash;
+    private readonly userRepository: IUserRepository;
 
     constructor(
         emailValidator: IEmailValidator,
         encrypterHash: IEncrypterHash,
+        userRepository: IUserRepository,
     ) {
         this.emailValidator = emailValidator;
         this.encrypterHash = encrypterHash;
+        this.userRepository = userRepository;
     }
 
-    async execute(data: any): Promise<any> {
+    async execute(data: any): Promise<IDbUser> {
         const { name, lastName, email, password, passwordConfirmation } =
             data as IUser;
 
@@ -43,13 +48,14 @@ class CreateUserUseCase implements ICreateUserUseCase {
 
         const passwordHashed = this.encrypterHash.hash(password);
 
-        return {
-            id: "valid_id",
+        const createdUser = await this.userRepository.add({
             name,
-            email,
             lastName,
+            email,
             password: passwordHashed,
-        };
+        });
+
+        return createdUser;
     }
 }
 
