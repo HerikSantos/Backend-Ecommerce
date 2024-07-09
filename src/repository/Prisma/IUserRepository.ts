@@ -10,6 +10,7 @@ interface IUser {
 interface IUserRepository {
     add: (user: IUser) => Promise<IDbUser>;
     findById: (id: string) => Promise<IDbUser>;
+    findByEmail: (email: string) => Promise<IDbUser | null>;
 }
 
 export type { IUserRepository };
