@@ -8,8 +8,8 @@ interface IUser {
 }
 
 interface IUserRepository {
-    add: (user: IUser) => IDbUser;
-    findById: (id: string) => IDbUser;
+    add: (user: IUser) => Promise<IDbUser>;
+    findById: (id: string) => Promise<IDbUser>;
 }
 
 export type { IUserRepository };
