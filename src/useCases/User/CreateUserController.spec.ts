@@ -1,13 +1,13 @@
 import { type Response, type Request } from "express";
 
-import { type IUser } from "../../entities/interfaces";
+import { type IDbUser } from "../../entities/interfaces";
 import { CreateUserController } from "./CreateUserController";
 import { type ICreateUserUseCase } from "./ICreateUserUseCase";
 
 function makeCreateUserUsecase(): ICreateUserUseCase {
     class CreateUserUseCaseStub implements ICreateUserUseCase {
-        async execute(data: any): Promise<IUser> {
-            const fakeUser: IUser = {
+        async execute(data: any): Promise<IDbUser> {
+            const fakeUser: IDbUser = {
                 id: "valid_id",
                 name: "valid_name",
                 lastName: "valid_lastName",

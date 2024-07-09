@@ -1,8 +1,8 @@
-interface IUser {
+interface IDbUser {
     id: string;
     name: string;
     lastName: string;
     email: string;
 }
 
-export type { IUser };
+export type { IDbUser };
