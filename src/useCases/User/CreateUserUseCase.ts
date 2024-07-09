@@ -1,5 +1,5 @@
 import { type IDbUser } from "../../entities/interfaces";
-import { MissingParams } from "../../errors/errors";
+import { BadRequest, MissingParams } from "../../errors/errors";
 import { type IUserRepository } from "../../repository/Prisma/IUserRepository";
 import { type IEmailValidator } from "../protocols/IEmailValidator";
 import { type IEncrypterHash } from "../protocols/IEncrypterHash";
@@ -47,6 +47,11 @@ class CreateUserUseCase implements ICreateUserUseCase {
         }
 
         const passwordHashed = this.encrypterHash.hash(password);
+
+        const userExists = await this.userRepository.findByEmail(email);
+
+        if (userExists && userExists.email === email)
+            throw new BadRequest("User already exits", 400);
 
         const createdUser = await this.userRepository.add({
             name,
