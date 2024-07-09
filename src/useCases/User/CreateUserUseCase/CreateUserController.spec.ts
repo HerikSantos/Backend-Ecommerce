@@ -1,6 +1,6 @@
 import { type Response, type Request } from "express";
 
-import { type IDbUser } from "../../entities/interfaces";
+import { type IDbUser } from "../../../entities/interfaces";
 import { CreateUserController } from "./CreateUserController";
 import { type ICreateUserUseCase } from "./ICreateUserUseCase";
 

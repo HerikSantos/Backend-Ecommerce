@@ -1,7 +1,7 @@
-import { type IDbUser } from "../../entities/interfaces";
-import { type IUserRepository } from "../../repository/Prisma/IUserRepository";
-import { type IEmailValidator } from "../protocols/IEmailValidator";
-import { type IEncrypterHash } from "../protocols/IEncrypterHash";
+import { type IDbUser } from "../../../entities/interfaces";
+import { type IUserRepository } from "../../../repository/Prisma/IUserRepository";
+import { type IEmailValidator } from "../../protocols/IEmailValidator";
+import { type IEncrypterHash } from "../../protocols/IEncrypterHash";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 import { type IUser } from "./interfaces";
 

@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
 
-import { type IController } from "../protocols/IController";
+import { type IController } from "../../protocols/IController";
 import { type ICreateUserUseCase } from "./ICreateUserUseCase";
 
 class CreateUserController implements IController {
