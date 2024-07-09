@@ -1,4 +1,4 @@
-import { type IDbUser } from "../../entities/interfaces";
+import { type IDbUser } from "../../../entities/interfaces";
 import { type IUserRepository } from "./IUserRepository";
 
 interface IUser {
